@@ -17,7 +17,7 @@ Include the built SDK files in your HTML:
     
     <script type="module">
         // Import the SDK
-        import { TPSentinelSDK } from 'https://static.testpress.in/static/sentinel/sentinel-sdk.v1.0.0-beta.1.umd.js';
+        import { TPSentinelSDK } from 'https://static.testpress.in/static/sentinel/sentinel-sdk.v1.0.0-beta.1.es.js';
         
         // Get SDK instance
         const sdk = TPSentinelSDK.getInstance();
@@ -105,7 +105,7 @@ await proctor.stop();
 
   <script type="module">
     // Import the SDK
-    import { TPSentinelSDK } from 'https://static.testpress.in/static/sentinel/sentinel-sdk.v1.0.0-beta.1.umd.js';
+    import { TPSentinelSDK } from 'https://static.testpress.in/static/sentinel/sentinel-sdk.v1.0.0-beta.1.es.js';
 
     class CourseProctor {
       constructor() {
