@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SentinelSDK Sandbox</title>
+  <link rel="stylesheet" href="./static/sentinel-js-sdk.css">
+</head>
+
+<body class="max-w-5xl mx-auto p-5 min-h-screen bg-gray-200 text-gray-700">
+  <div class="bg-white rounded-lg p-8 shadow-sm border border-gray-200">
+    <h1 class="text-center text-4xl font-light text-gray-700 mb-8">SentinelSDK Sandbox</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div class="mb-0">
+        <div class="mb-5 p-5 border border-gray-200 rounded-lg bg-gray-50">
+          <h2 class="text-xl font-semibold text-gray-700 border-b border-gray-300 pb-2 mb-4">SDK Initialization</h2>
+          <div class="flex flex-col gap-2 mb-4">
+            <div class="flex items-center gap-3">
+              <label for="orgId" class="w-32 font-semibold text-gray-700">Org ID:</label>
+              <input type="text" id="orgId" placeholder="Enter organization UUID"
+                value="123e4567-e89b-12d3-a456-426614174000"
+                class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400" />
+            </div>
+          </div>
+          <button onclick="initializeSDK()"
+            class="bg-gray-700 hover:bg-gray-800 text-white px-6 py-2 rounded-md font-medium shadow-sm hover:shadow transition disabled:bg-gray-400 disabled:cursor-not-allowed">Initialize
+            SDK</button>
+          <div id="initStatus" class="mt-3"></div>
+        </div>
+      </div>
+
+      <div class="mb-0">
+        <div class="mb-5 p-5 border border-gray-200 rounded-lg bg-gray-50">
+          <h2 class="text-xl font-semibold text-gray-700 border-b border-gray-300 pb-2 mb-4">Proctoring Session</h2>
+          <div class="flex flex-col gap-2 mb-2">
+            <div class="flex items-center gap-3">
+              <label for="sessionId" class="w-32 font-semibold text-gray-700">Session ID:</label>
+              <input type="text" id="sessionId" placeholder="Enter session ID" value="session_001"
+                class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400" />
+            </div>
+            <div class="flex items-center gap-3">
+              <label for="sessionToken" class="w-32 font-semibold text-gray-700">Token:</label>
+              <input type="text" id="sessionToken" placeholder="Enter session token" value="token_abc123"
+                class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400" />
+            </div>
+          </div>
+          <div class="flex gap-2 mt-2">
+            <button onclick="startProctoring()" id="startBtn" disabled
+              class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-md font-medium shadow-sm hover:shadow transition disabled:bg-gray-400 disabled:cursor-not-allowed">Start
+              Proctoring</button>
+            <button onclick="stopProctoring()" id="stopBtn" disabled
+              class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md font-medium shadow-sm hover:shadow transition disabled:bg-gray-400 disabled:cursor-not-allowed">Stop
+              Proctoring</button>
+          </div>
+          <div id="proctorStatus" class="mt-3"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-5 p-5 border border-gray-200 rounded-lg bg-gray-50">
+      <h2 class="text-xl font-semibold text-gray-700 border-b border-gray-300 pb-2 mb-4">Checkpoint Management</h2>
+      <div class="flex flex-col gap-2 mb-2">
+        <div class="flex items-center gap-3">
+          <label for="checkpointId" class="w-32 font-semibold text-gray-700">Checkpoint:</label>
+          <input type="text" id="checkpointId" placeholder="Enter checkpoint ID" value="checkpoint_1"
+            class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400" />
+        </div>
+      </div>
+      <div class="flex gap-2 mt-2">
+        <button onclick="setCheckpoint()" id="setCheckpointBtn" disabled
+          class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-md font-medium shadow-sm hover:shadow transition disabled:bg-gray-400 disabled:cursor-not-allowed">Set
+          Checkpoint</button>
+        <button onclick="completeCheckpoint()" id="completeCheckpointBtn" disabled
+          class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md font-medium shadow-sm hover:shadow transition disabled:bg-gray-400 disabled:cursor-not-allowed">Complete
+          Checkpoint</button>
+      </div>
+    </div>
+
+    <div class="mb-5 p-5 border border-gray-200 rounded-lg bg-gray-50">
+      <h2 class="text-xl font-semibold text-gray-700 border-b border-gray-300 pb-2 mb-4">Event Capture</h2>
+      <div class="flex flex-col gap-2 mb-2">
+        <div class="flex items-center gap-3">
+          <label for="eventName" class="w-32 font-semibold text-gray-700">Event:</label>
+          <input type="text" id="eventName" placeholder="Enter event name" value="user_interaction"
+            class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400" />
+        </div>
+        <div class="flex items-center gap-3">
+          <label for="eventData" class="w-32 font-semibold text-gray-700">Data:</label>
+          <input type="text" id="eventData" placeholder="Enter event data (JSON)"
+            value='{"action": "click", "element": "button"}'
+            class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400" />
+        </div>
+      </div>
+      <button onclick="captureEvent()" id="captureBtn" disabled
+        class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-md font-medium shadow-sm hover:shadow transition disabled:bg-gray-400 disabled:cursor-not-allowed">Capture
+        Event</button>
+    </div>
+    <div id="tp-sentinel-ui"></div>
+  </div>
+
+  <script type="module">
+    // Import the SDK
+    import { TPSentinelSDK } from './static/sentinel-sdk.es.js';
+
+    // Global variables
+    let sdk = TPSentinelSDK.getInstance();
+    let proctor = null;
+
+    // Make functions global so they can be called from onclick handlers
+    window.sdk = sdk;
+    window.proctor = proctor;
+
+    // Utility functions
+    function log(message, type = 'info') {
+      console.log(message);
+    }
+
+    function setStatus(elementId, message, type = 'info') {
+      const element = document.getElementById(elementId);
+      let colorClass = '';
+      if (type === 'success') colorClass = 'bg-gray-100 text-gray-700 border border-gray-300';
+      else if (type === 'error') colorClass = 'bg-gray-100 text-gray-700 border border-gray-300';
+      else colorClass = 'bg-gray-100 text-gray-700 border border-gray-300';
+      element.innerHTML = `<div class="px-3 py-2 rounded font-medium mt-2 ${colorClass}">${message}</div>`;
+    }
+
+    function updateButtonStates() {
+      const isInitialized = sdk && window.isSDKInitialized;
+      const isProctoring = proctor !== null;
+
+      document.getElementById('startBtn').disabled = !isInitialized || isProctoring;
+      document.getElementById('stopBtn').disabled = !isProctoring;
+      document.getElementById('setCheckpointBtn').disabled = !isProctoring;
+      document.getElementById('completeCheckpointBtn').disabled = !isProctoring;
+      document.getElementById('captureBtn').disabled = !isProctoring;
+    }
+
+    // SDK Functions
+    window.initializeSDK = async function () {
+      try {
+        const orgId = document.getElementById('orgId').value;
+        if (!orgId) {
+          throw new Error('Organization ID is required');
+        }
+
+        await sdk.initialize(orgId);
+        window.isSDKInitialized = true;
+
+        log(`✅ SDK initialized successfully with org ID: ${orgId}`, 'success');
+        setStatus('initStatus', 'SDK initialized successfully!', 'success');
+        updateButtonStates();
+      } catch (error) {
+        log(`❌ SDK initialization failed: ${error.message}`, 'error');
+        setStatus('initStatus', `Initialization failed: ${error.message}`, 'error');
+      }
+    };
+
+    window.startProctoring = async function () {
+      try {
+        const sessionId = document.getElementById('sessionId').value;
+        const sessionToken = document.getElementById('sessionToken').value;
+        const overridePolicies = {
+          snapshotInterval: 2000,
+          anomalyDetection: true
+        };
+
+        if (!sessionId || !sessionToken) {
+          throw new Error('Session ID and token are required');
+        }
+
+        proctor = await sdk.startProctor(sessionId, sessionToken, overridePolicies);
+        console.log('proctor', proctor);
+        window.proctor = proctor;
+
+        log(`🚀 Proctoring started for session: ${sessionId}`, 'success');
+        setStatus('proctorStatus', `Proctoring active - Session: ${sessionId}`, 'success');
+        updateButtonStates();
+      } catch (error) {
+        log(`❌ Failed to start proctoring: ${error.message}`, 'error');
+        setStatus('proctorStatus', `Failed to start: ${error.message}`, 'error');
+      }
+    };
+
+    window.stopProctoring = async function () {
+      try {
+        if (!proctor) {
+          throw new Error('No active proctoring session');
+        }
+
+        await proctor.stop();
+        proctor = null;
+        window.proctor = null;
+
+        log(`🛑 Proctoring session stopped`, 'success');
+        setStatus('proctorStatus', 'Proctoring stopped', 'info');
+        updateButtonStates();
+      } catch (error) {
+        log(`❌ Failed to stop proctoring: ${error.message}`, 'error');
+        setStatus('proctorStatus', `Failed to stop: ${error.message}`, 'error');
+      }
+    };
+
+    window.setCheckpoint = async function () {
+      try {
+        if (!proctor) {
+          throw new Error('No active proctoring session');
+        }
+
+        const checkpointId = document.getElementById('checkpointId').value;
+        if (!checkpointId) {
+          throw new Error('Checkpoint ID is required');
+        }
+
+        const overridePolicies = {
+          snapshotInterval: 2000,
+          anomalyDetection: true
+        };
+
+        await proctor.setCheckpoint(checkpointId, overridePolicies);
+        log(`📍 Checkpoint set: ${checkpointId}`, 'success');
+      } catch (error) {
+        log(`❌ Failed to set checkpoint: ${error.message}`, 'error');
+      }
+    };
+
+    window.completeCheckpoint = async function () {
+      try {
+        if (!proctor) {
+          throw new Error('No active proctoring session');
+        }
+
+        const checkpointId = document.getElementById('checkpointId').value;
+        if (!checkpointId) {
+          throw new Error('Checkpoint ID is required');
+        }
+
+        await proctor.completeCheckpoint(checkpointId);
+        log(`✅ Checkpoint completed: ${checkpointId}`, 'success');
+      } catch (error) {
+        log(`❌ Failed to complete checkpoint: ${error.message}`, 'error');
+      }
+    };
+
+    window.captureEvent = async function () {
+      try {
+        if (!proctor) {
+          throw new Error('No active proctoring session');
+        }
+
+        const eventName = document.getElementById('eventName').value;
+        const eventDataStr = document.getElementById('eventData').value;
+
+        if (!eventName) {
+          throw new Error('Event name is required');
+        }
+
+        let eventData = {};
+        if (eventDataStr) {
+          try {
+            eventData = JSON.parse(eventDataStr);
+          } catch (e) {
+            throw new Error('Event data must be valid JSON');
+          }
+        }
+
+        await proctor.capture(eventName, eventData);
+        log(`📊 Event captured: ${eventName}`, 'success');
+      } catch (error) {
+        log(`❌ Failed to capture event: ${error.message}`, 'error');
+      }
+    };
+
+    window.clearOutput = function () {
+      document.getElementById('output').textContent = '';
+    };
+
+    // Initialize button states
+    updateButtonStates();
+
+    // Welcome message
+    log('🎯 SentinelSDK Sandbox loaded! Initialize the SDK to get started.', 'info');
+
+  </script>
+</body>
+
+</html>
