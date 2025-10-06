@@ -7,7 +7,7 @@ Include the built SDK files in your HTML:
 <html>
 <head>
     <title>Your App</title>
-    <link rel="stylesheet" href="./dist/sentinel-js-sdk.css">
+    <link rel="stylesheet" href="./static/sentinel-js-sdk.css">
 </head>
 <body>
     <!-- Your app content -->
@@ -15,10 +15,12 @@ Include the built SDK files in your HTML:
     <!-- Required container for Sentinel UI -->
     <div id="tp-sentinel-ui"></div>
     
-    <script src="./static/sentinel-sdk.es.js"></script>
-    <script>
-        // Use TPSentinelSDK from global scope
-        const { TPSentinelSDK } = window.SentinelSDK;
+    <script type="module">
+        // Import the SDK
+        import { TPSentinelSDK } from './static/sentinel-sdk.es.js';
+        
+        // Get SDK instance
+        const sdk = TPSentinelSDK.getInstance();
     </script>
 </body>
 </html>
@@ -42,14 +44,18 @@ sdk.initialize('your-org-code-here');
 
 ```javascript
 // Start a proctoring session
-const proctor = await sdk.startProctor('session-123', 'session-token-abc');
+const proctor = await sdk.startProctor('session-123', 'session-token-abc', {
+  anomalyDetection: true
+});
 ```
 
 ### 3. Set Checkpoint
 
 ```javascript
 // Set a checkpoint within the session
-await proctor.setCheckpoint('checkpoint-1');
+await proctor.setCheckpoint('checkpoint-1', {
+  anomalyDetection: true
+});
 ```
 
 ### 4. Complete Checkpoint
@@ -83,7 +89,7 @@ await proctor.stop();
 <html>
 <head>
   <title>Certification Course</title>
-  <link rel="stylesheet" href="./static/sentinel-sdk.css">
+  <link rel="stylesheet" href="./static/sentinel-js-sdk.css">
 </head>
 <body>
   <h1>Course: Equity Derivatives Certification</h1>
@@ -97,9 +103,9 @@ await proctor.stop();
 
   <div id="tp-sentinel-ui"></div>
 
-  <script src="./static/sentinel-sdk.es.js"></script>
-  <script>
-    const { TPSentinelSDK } = window.SentinelSDK;
+  <script type="module">
+    // Import the SDK
+    import { TPSentinelSDK } from './static/sentinel-sdk.es.js';
 
     class CourseProctor {
       constructor() {
@@ -199,7 +205,7 @@ Initialize the SDK with your organization code.
 
 * `orgCode` (string): Your organization code
 
-#### `startProctor(sessionId, sessionToken)`
+#### `startProctor(sessionId, sessionToken, overridePolicies?)`
 
 Start a proctoring session.
 
@@ -207,18 +213,24 @@ Start a proctoring session.
 
 * `sessionId` (string): Unique session identifier
 * `sessionToken` (string): Session authentication token
+* `overridePolicies` (object, optional): Policy overrides for the session
+  * `snapshotInterval` (number): Interval for taking snapshots in milliseconds
+  * `anomalyDetection` (boolean): Enable/disable anomaly detection
 
 **Returns:** Proctor instance
 
 ### Proctor
 
-#### `setCheckpoint(checkpointId)`
+#### `setCheckpoint(checkpointId, overridePolicies?)`
 
 Set a checkpoint within the session.
 
 **Parameters:**
 
 * `checkpointId` (string): Checkpoint identifier
+* `overridePolicies` (object, optional): Policy overrides for the checkpoint
+  * `snapshotInterval` (number): Interval for taking snapshots in milliseconds
+  * `anomalyDetection` (boolean): Enable/disable anomaly detection
 
 #### `completeCheckpoint(checkpointId)`
 
