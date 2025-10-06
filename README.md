@@ -7,7 +7,7 @@ Include the built SDK files in your HTML:
 <html>
 <head>
     <title>Your App</title>
-    <link rel="stylesheet" href="./static/sentinel-js-sdk.css">
+    <link rel="stylesheet" href="https://static.testpress.in/static/sentinel/sentinel-sdk.v1.0.0-beta.1.css">
 </head>
 <body>
     <!-- Your app content -->
@@ -17,7 +17,7 @@ Include the built SDK files in your HTML:
     
     <script type="module">
         // Import the SDK
-        import { TPSentinelSDK } from './static/sentinel-sdk.es.js';
+        import { TPSentinelSDK } from 'https://static.testpress.in/static/sentinel/sentinel-sdk.v1.0.0-beta.1.umd.js';
         
         // Get SDK instance
         const sdk = TPSentinelSDK.getInstance();
@@ -89,7 +89,7 @@ await proctor.stop();
 <html>
 <head>
   <title>Certification Course</title>
-  <link rel="stylesheet" href="./static/sentinel-js-sdk.css">
+  <link rel="stylesheet" href="https://static.testpress.in/static/sentinel/sentinel-sdk.v1.0.0-beta.1.css">
 </head>
 <body>
   <h1>Course: Equity Derivatives Certification</h1>
@@ -105,7 +105,7 @@ await proctor.stop();
 
   <script type="module">
     // Import the SDK
-    import { TPSentinelSDK } from './static/sentinel-sdk.es.js';
+    import { TPSentinelSDK } from 'https://static.testpress.in/static/sentinel/sentinel-sdk.v1.0.0-beta.1.umd.js';
 
     class CourseProctor {
       constructor() {
